@@ -1,0 +1,16 @@
+.\output\malloc.o: ..\BSP\MALLOC\malloc.c
+.\output\malloc.o: ..\BSP\MALLOC\malloc.h
+.\output\malloc.o: ..\BSP\sys\sys.h
+.\output\malloc.o: ..\CMSIS\stm32f10x.h
+.\output\malloc.o: ..\CMSIS\core_cm3.h
+.\output\malloc.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\output\malloc.o: ..\CMSIS\system_stm32f10x.h
+.\output\malloc.o: ..\USER\stm32f10x_conf.h
+.\output\malloc.o: ..\LIB\inc\stm32f10x_can.h
+.\output\malloc.o: ..\CMSIS\stm32f10x.h
+.\output\malloc.o: ..\LIB\inc\stm32f10x_exti.h
+.\output\malloc.o: ..\LIB\inc\stm32f10x_gpio.h
+.\output\malloc.o: ..\LIB\inc\stm32f10x_rcc.h
+.\output\malloc.o: ..\LIB\inc\stm32f10x_tim.h
+.\output\malloc.o: ..\LIB\inc\stm32f10x_usart.h
+.\output\malloc.o: ..\LIB\inc\misc.h
