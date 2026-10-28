@@ -2,12 +2,13 @@
 #include "rs485.h"	 
 #include "bsy_os.h"
 #include "bsy_bus.h"
-
+#include <stdio.h>
 
 
 #define     THREAD3     3
 
 
+uint8_t   pamter = 18;          //Test
 
 //定义485接收数据结构体
 UART_REC_Type  RS485_RecData;
@@ -105,6 +106,16 @@ void RS485_Send_Data(u8 *buf,u8 len)
 }
 
 
+//返回一串数据，用于测试
+void  ReturnDatas(void)
+{
+    uint8_t bufs[10] = {0x5b, 0x02, 0x03, 0x04, 0x07, 0x08, 0x09, 0x0a, 0x00, 0x5d};
+    uint8_t len = sizeof(bufs);
+    
+    bufs[8] = mod128(bufs, len);        //添加校验值
+    RS485_Send_Data(bufs, len);         //发送数据
+}
+
 
 
 
@@ -113,17 +124,18 @@ void RS485_Send_Data(u8 *buf,u8 len)
 //使用BSY_BUS协议接收数据
 void RS485_Run(void *pmt)
 {
-    pmt = pmt;
+    uint8_t pmts = *((uint8_t *)pmt);        //强制转换为初始化时的参数类型
     
     if(RS485_RecData.rec_ok != 0){      //检查有没有新收到的数据
         if(check_mod128(RS485_RecData.data, RS485_RecData.len) != 0){    //校验收到的数据
             //接收数据校验正确
             /***  拿到数据后在此处处理你要做的事情  Do something......  ***/
-            RS485_Send_Data(RS485_RecData.data,RS485_RecData.len);   //返回收到的数据
+            ReturnDatas();              //返回一串数据，测试
+            printf("Input pamter is：%d! \r\n", pmts);       //打印传入的参数看是否正确
         }
         RS485_RecData.rec_ok = 0;       //数据已处理，清除接收标志
+        
     }
-    
 }
 
 
@@ -139,7 +151,8 @@ void Task_RS485(void)
     RS485_Task_Handle.R_STATUS = STOP;       //设置状态为停止态
     RS485_Task_Handle.LEVEL = THREAD3;       //设置该任务优先级为3
     RS485_Task_Handle.LOCK = false;          //0任务锁打开，可以执行该任务
-    RS485_Task_Handle.pf = RS485_Run;         //任务回调函数
+    RS485_Task_Handle.pmt = &pamter;         //回调函数参数，这里只是测试   
+    RS485_Task_Handle.pf = RS485_Run;      //任务回调函数
     Task_Add(&RS485_Task_Handle);            //添加任务到任务列表
 }
 
